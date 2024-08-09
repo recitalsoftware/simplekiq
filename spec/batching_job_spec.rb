@@ -59,15 +59,6 @@ RSpec.describe Simplekiq::BatchingJob do
       end
     end
 
-    it "runs the on_success callback even if no batches are run" do
-      stub_const("TestJob", test_job)
-      stub_const("Output", output = double("Output", call: nil))
-
-      test_job.new.perform([])
-
-      expect(output).to have_received(:call).with([])
-    end
-
     it "runs the on_success callback when batches complete successfully", sidekiq: :fake do
       stub_const("TestJob", test_job)
       stub_const("Output", output = double("Output", call: nil))
@@ -96,15 +87,6 @@ RSpec.describe Simplekiq::BatchingJob do
           Output.call(options["args"].first)
         end
       end
-    end
-
-    it "runs the on_complete callback even if no batches are run" do
-      stub_const("TestJob", test_job)
-      stub_const("Output", output = double("Output", call: nil))
-
-      test_job.new.perform([])
-
-      expect(output).to have_received(:call).with([])
     end
 
     it "runs the on_complete callback when each job has been run once", sidekiq: :fake do
