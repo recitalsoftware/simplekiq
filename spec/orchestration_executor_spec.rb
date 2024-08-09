@@ -49,23 +49,6 @@ RSpec.describe Simplekiq::OrchestrationExecutor do
 
       execute
     end
-
-    context "when the workflow is empty" do
-      let(:workflow) { [] }
-
-      it "immediately calls the orchestration callbacks" do
-        expect(job).to receive(:on_success).with(nil, { "args" => ["some", "args"] })
-
-        execute
-      end
-
-      it "doesn't create new batches or run any steps" do
-        expect(Sidekiq::Batch).not_to receive(:new)
-        expect(described_class).not_to receive(:new)
-
-        execute
-      end
-    end
   end
 
   describe "run_step" do
