@@ -7,7 +7,6 @@ require "simplekiq/orchestration_executor"
 require "simplekiq/orchestration"
 require "simplekiq/orchestration_job"
 require "simplekiq/batching_job"
-require "simplekiq/batch_tracker_job"
 
 module Simplekiq
   class << self

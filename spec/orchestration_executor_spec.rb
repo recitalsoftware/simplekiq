@@ -23,7 +23,7 @@ RSpec.describe Simplekiq::OrchestrationExecutor do
       described_class.execute(args: ["some", "args"], job: job, workflow: workflow)
     end
 
-    it "kicks off the first step with a new batch with the empty tracking batch inside it" do
+    it "kicks off the first step with a new batch" do
       batch_double = instance_double(Sidekiq::Batch, bid: 42)
       allow(Sidekiq::Batch).to receive(:new).and_return(batch_double)
       expect(batch_double).to receive(:description=).with("FakeOrchestration Simplekiq orchestration")
@@ -34,10 +34,6 @@ RSpec.describe Simplekiq::OrchestrationExecutor do
         batch_stack_depth += 1
         block.call
         batch_stack_depth -= 1
-      end
-
-      expect(Simplekiq::BatchTrackerJob).to receive(:perform_async) do
-        expect(batch_stack_depth).to eq 1
       end
 
       instance = instance_double(Simplekiq::OrchestrationExecutor)
