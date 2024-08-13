@@ -21,6 +21,14 @@ module SidekiqBatchTestHelpers
     end
   end
 
+  def stub_child_batches
+    batch = double("child_batch")
+    allow_any_instance_of(Simplekiq::BaseBatch).to receive(:batch) { batch }
+    allow(batch).to receive(:jobs) do |&block|
+      block.call
+    end
+  end
+
   def fail_one_batch
     raise NoBatchesError if @batches.empty?
     raise "Tried to fail one batch but there were multiple batches" if @batches.length > 1

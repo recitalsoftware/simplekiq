@@ -63,6 +63,7 @@ RSpec.describe Simplekiq::BatchingJob do
       stub_const("TestJob", test_job)
       stub_const("Output", output = double("Output", call: nil))
       stub_batches
+      stub_child_batches
 
       test_job.new.perform(["test"])
       run_all_jobs_and_batches
@@ -93,6 +94,7 @@ RSpec.describe Simplekiq::BatchingJob do
       stub_const("TestJob", test_job)
       stub_const("Output", output = double("Output", call: nil))
       stub_batches
+      stub_child_batches
 
       test_job.new.perform(["test"])
       run_all_jobs_and_batches
@@ -123,6 +125,7 @@ RSpec.describe Simplekiq::BatchingJob do
       stub_const("TestJob", test_job)
       stub_const("Output", output = double("Output", call: nil))
       stub_batches
+      stub_child_batches
 
       test_job.new.perform(["test"])
       fail_one_batch
