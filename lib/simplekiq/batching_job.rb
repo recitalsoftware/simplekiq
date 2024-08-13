@@ -136,7 +136,9 @@ module Simplekiq
     include Sidekiq::Job
 
     def perform(*args)
-      module_parent_of_class.new.perform_batch(*args)
+      batch.jobs do
+        module_parent_of_class.new.perform_batch(*args)
+      end
     end
 
     private
