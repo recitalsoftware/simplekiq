@@ -14,6 +14,8 @@ module Simplekiq
       batch.on("death", job.class, "args" => args) if job.respond_to?(:on_death)
       batch.on("complete", job.class, "args" => args) if job.respond_to?(:on_complete)
       batch.on("success", job.class, "args" => args) if job.respond_to?(:on_success)
+
+      job.define_custom_batch_callbacks(batch) if job.respond_to?(:define_custom_batch_callbacks)
     end
   end
 end

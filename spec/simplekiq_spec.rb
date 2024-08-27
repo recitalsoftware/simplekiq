@@ -14,6 +14,11 @@ RSpec.describe Simplekiq do
       def on_death(status, options)
       end
     end)
+
+    stub_const("OrcTest::CustomBatchCallbacksJob", Class.new do
+      def define_custom_batch_callbacks(orchestration_batch)
+      end
+    end)
   end
 
   it "has a version number" do
@@ -41,6 +46,15 @@ RSpec.describe Simplekiq do
 
       it "does not define any callbacks" do
         expect(batch).not_to receive(:on)
+        call
+      end
+    end
+
+    context "when the job defines custom orchestration callback methods" do
+      let(:job) { OrcTest::CustomBatchCallbacksJob.new }
+
+      it "calls define_custom_batch_callbacks" do
+        expect(job).to receive(:define_custom_batch_callbacks).once.with(batch)
         call
       end
     end
