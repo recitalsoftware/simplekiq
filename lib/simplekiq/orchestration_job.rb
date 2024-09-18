@@ -8,8 +8,10 @@ module Simplekiq
 
     extend Forwardable
     def_delegators :orchestration, :run, :in_parallel
+    attr_reader :orchestration
 
     def perform(*args)
+      build_orchestration(*args)
       perform_orchestration(*args)
 
       # This makes it so that if there is a parent batch which this orchestration is run under, then the layered batches will be:
@@ -38,8 +40,14 @@ module Simplekiq
       end
     end
 
-    def orchestration
-      @orchestration ||= Orchestration.new
+    def build_orchestration(*args)
+      @orchestration ||= Orchestration.new(
+        child_job_options: child_job_options(*args)
+      )
+    end
+
+    def child_job_options(*args)
+      {}
     end
   end
 end
